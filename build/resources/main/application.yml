@@ -1,0 +1,29 @@
+server:
+  port: 8002
+
+spring:
+  application:
+    name: api-gateway
+
+  cloud:
+    gateway:
+      routes:
+        - id: greencomm-main
+          uri: https://principal-m.onrender.com
+          predicates:
+            - Path=/api/**
+          filters:
+            - RewritePath=/api/(?<segment>.*), /${segment}
+
+        - id: greencomm-publications
+          uri: https://publicaciones-m.onrender.com
+          predicates:
+            - Path=/publication/**
+          filters:
+            - RewritePath=/publication/(?<segment>.*), /${segment}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
